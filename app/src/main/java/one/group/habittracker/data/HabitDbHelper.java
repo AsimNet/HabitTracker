@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 
-
 public class HabitDbHelper extends SQLiteOpenHelper {
 
     /**
@@ -28,14 +27,13 @@ public class HabitDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-String sqlQuery = "CREATE TABLE "+ HabitContract.HabitEntry.TABLE_NAME+" ( "+
-        HabitContract.HabitEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
-        HabitContract.HabitEntry.COLUMN_HABIT_NAME+" TEXT NOT NULL, "+
-        HabitContract.HabitEntry.COLUMN_HABIT_STATUS+" INTEGER NOT NULL DEFAULT 0"+
-        " );";
+        String sqlQuery = "CREATE TABLE " + HabitContract.HabitEntry.TABLE_NAME + " ( " +
+                HabitContract.HabitEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                HabitContract.HabitEntry.COLUMN_HABIT_NAME + " TEXT NOT NULL, " +
+                HabitContract.HabitEntry.COLUMN_HABIT_STATUS + " INTEGER NOT NULL DEFAULT 0" +
+                " );";
 
         db.execSQL(sqlQuery);
-
 
 
     }

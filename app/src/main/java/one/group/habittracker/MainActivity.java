@@ -21,32 +21,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         resultsView = (TextView) findViewById(R.id.results);
         insertHabit();
-        readHabits();
+        extractingCursor();
     }
 
-    public void insertHabit() {
-        ContentValues values = new ContentValues();
-        values.put(HabitContract.HabitEntry.COLUMN_HABIT_NAME, "WALkING");
-        values.put(HabitContract.HabitEntry.COLUMN_HABIT_STATUS, HabitContract.HabitEntry.STATUS_DONE);
-
-        HabitDbHelper habitHelper = new HabitDbHelper(this);
-        SQLiteDatabase db = habitHelper.getWritableDatabase();
-        long insertedID = db.insert(HabitContract.HabitEntry.TABLE_NAME, null, values);
-        Toast.makeText(this, String.valueOf(insertedID), Toast.LENGTH_SHORT).show();
-
-        db.close();
-        habitHelper.close();
-    }
-
-    public void readHabits() {
-        HabitDbHelper habitDbHelper = new HabitDbHelper(this);
-        SQLiteDatabase db = habitDbHelper.getReadableDatabase();
-        Cursor cursor = db.query(HabitContract.HabitEntry.TABLE_NAME, new String[]{
-                HabitContract.HabitEntry._ID,
-                HabitContract.HabitEntry.COLUMN_HABIT_NAME,
-                HabitContract.HabitEntry.COLUMN_HABIT_STATUS
-        }, null, null, null, null, null);
-
+    public void extractingCursor() {
+        Cursor cursor = readHabits();
         int HABIT_NAME_INDEX = cursor.getColumnIndex(HabitContract.HabitEntry.COLUMN_HABIT_NAME);
         int HABIT_STATUS_INDEX = cursor.getColumnIndex(HabitContract.HabitEntry.COLUMN_HABIT_STATUS);
         StringBuilder results = new StringBuilder();
@@ -66,6 +45,30 @@ public class MainActivity extends AppCompatActivity {
 
         }
         resultsView.setText(results);
+    }
 
+    public void insertHabit() {
+        ContentValues values = new ContentValues();
+        values.put(HabitContract.HabitEntry.COLUMN_HABIT_NAME, "WALkING");
+        values.put(HabitContract.HabitEntry.COLUMN_HABIT_STATUS, HabitContract.HabitEntry.STATUS_DONE);
+
+        HabitDbHelper habitHelper = new HabitDbHelper(this);
+        SQLiteDatabase db = habitHelper.getWritableDatabase();
+        long insertedID = db.insert(HabitContract.HabitEntry.TABLE_NAME, null, values);
+        Toast.makeText(this, String.valueOf(insertedID), Toast.LENGTH_SHORT).show();
+
+        db.close();
+        habitHelper.close();
+    }
+
+    public Cursor readHabits() {
+        HabitDbHelper habitDbHelper = new HabitDbHelper(this);
+        SQLiteDatabase db = habitDbHelper.getReadableDatabase();
+
+        return db.query(HabitContract.HabitEntry.TABLE_NAME, new String[]{
+                HabitContract.HabitEntry._ID,
+                HabitContract.HabitEntry.COLUMN_HABIT_NAME,
+                HabitContract.HabitEntry.COLUMN_HABIT_STATUS
+        }, null, null, null, null, null);
     }
 }
